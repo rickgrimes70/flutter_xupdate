@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-//使用Dart Data Class Generator插件进行创建
-//使用命令: Generate from JSON
 class AppInfo {
   final bool hasUpdate;
   final bool isIgnorable;
@@ -11,14 +9,14 @@ class AppInfo {
   final String apkUrl;
   final int apkSize;
 
-  AppInfo({
-    this.hasUpdate,
-    this.isIgnorable,
-    this.versionCode,
-    this.versionName,
-    this.updateLog,
-    this.apkUrl,
-    this.apkSize,
+  const AppInfo({
+    required this.hasUpdate,
+    required this.isIgnorable,
+    required this.versionCode,
+    required this.versionName,
+    required this.updateLog,
+    required this.apkUrl,
+    required this.apkSize,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,26 +31,25 @@ class AppInfo {
     };
   }
 
-  static AppInfo fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
+  factory AppInfo.fromMap(Map<String, dynamic> map) {
     return AppInfo(
-      hasUpdate: map['hasUpdate'],
-      isIgnorable: map['isIgnorable'],
-      versionCode: map['versionCode']?.toInt(),
-      versionName: map['versionName'],
-      updateLog: map['updateLog'],
-      apkUrl: map['apkUrl'],
-      apkSize: map['apkSize']?.toInt(),
+      hasUpdate: map['hasUpdate'] as bool? ?? false,
+      isIgnorable: map['isIgnorable'] as bool? ?? false,
+      versionCode: (map['versionCode'] as num?)?.toInt() ?? 0,
+      versionName: map['versionName'] as String? ?? '',
+      updateLog: map['updateLog'] as String? ?? '',
+      apkUrl: map['apkUrl'] as String? ?? '',
+      apkSize: (map['apkSize'] as num?)?.toInt() ?? 0,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  static AppInfo fromJson(String source) => fromMap(json.decode(source));
+  factory AppInfo.fromJson(String source) =>
+      AppInfo.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'AppInfo hasUpdate: $hasUpdate, isIgnorable: $isIgnorable, versionCode: $versionCode, versionName: $versionName, updateLog: $updateLog, apkUrl: $apkUrl, apkSize: $apkSize';
+    return 'AppInfo(hasUpdate: $hasUpdate, isIgnorable: $isIgnorable, versionCode: $versionCode, versionName: $versionName, updateLog: $updateLog, apkUrl: $apkUrl, apkSize: $apkSize)';
   }
 }
